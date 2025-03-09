@@ -24,6 +24,9 @@
     <ClCompile Include="Window.h">
       <Filter>头文件</Filter>
     </ClCompile>
+    <ClCompile Include="Atlas.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h">
@@ -39,6 +42,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Sound.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlas.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

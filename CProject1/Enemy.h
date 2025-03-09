@@ -6,12 +6,14 @@
 #include "Window.h"
 #include "Bullet.h"
 #include "Player.h"
+#include "Atlas.h"
+
 class Enemy
 {
 public:
 	Enemy() {
-		anim_left = new Animation(_T("img/enemy_left_%d.png"), 6, 45);
-		anim_right = new Animation(_T("img/enemy_right_%d.png"), 6, 45);
+		anim_left = new Animation(atlas_enemy_left, 45);
+		anim_right = new Animation(atlas_enemy_right, 45);
 		loadimage(&img_shadow, _T("img/shadow_enemy.png"));
 
 		// 敌人生成边界
@@ -66,9 +68,9 @@ public:
 
 		// 将敌人中心位置等效为点，判断点是否在玩家矩形内
 		POINT check_position = { position.x + FRAME_WIDTH / 2, position.y + FRAME_HEIGHT / 2 };
-		bool is_overlap_x = check_position.x >= player.GetPosition().x 
+		bool is_overlap_x = check_position.x >= player.GetPosition().x
 			&& check_position.x <= player.GetPosition().x + player.FRAME_WIDTH;
-		bool is_overlap_y = check_position.y >= player.GetPosition().y 
+		bool is_overlap_y = check_position.y >= player.GetPosition().y
 			&& check_position.y <= player.GetPosition().y + player.FRAME_HEIGHT;
 		return is_overlap_x && is_overlap_y;
 	}
