@@ -16,7 +16,7 @@ public:
 
 		// 敌人生成边界
 		enum class SpawnEdge {
-			Up=0,
+			Up = 0,
 			Down,
 			Left,
 			Right,
@@ -53,11 +53,24 @@ public:
 	}
 
 	bool CheckBulletCollision(const Bullet& bullet) {
-		return false;
+
+		// 将敌子弹等效为点，判断点是否在敌人矩形内
+		bool is_overlap_x = bullet.position.x >= position.x
+			&& bullet.position.x <= position.x + FRAME_WIDTH;
+		bool is_overlap_y = bullet.position.y >= position.y
+			&& bullet.position.y <= position.y + FRAME_HEIGHT;
+		return is_overlap_x && is_overlap_y;
 	}
 
 	bool CheckPlayerCollision(const Player& player) {
-		return false;
+
+		// 将敌人中心位置等效为点，判断点是否在玩家矩形内
+		POINT check_position = { position.x + FRAME_WIDTH / 2, position.y + FRAME_HEIGHT / 2 };
+		bool is_overlap_x = check_position.x >= player.GetPosition().x 
+			&& check_position.x <= player.GetPosition().x + player.FRAME_WIDTH;
+		bool is_overlap_y = check_position.y >= player.GetPosition().y 
+			&& check_position.y <= player.GetPosition().y + player.FRAME_HEIGHT;
+		return is_overlap_x && is_overlap_y;
 	}
 
 	void Move(const Player& player) {
@@ -91,6 +104,14 @@ public:
 			anim_right->play(position.x, position.y, delta);
 	}
 
+	void Hurt() {
+		alive = false;
+	}
+
+	bool CheckAlive() {
+		return alive;
+	}
+
 private:
 	const int SPEED = 2;
 	const int FRAME_WIDTH = 80;    // 身体宽度
@@ -103,6 +124,7 @@ private:
 	Animation* anim_right;
 	POINT position = { 0,0 };
 	bool facing_left = false;
+	bool alive = true;
 };
 
 #endif // ENEMY_H

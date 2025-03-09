@@ -9,6 +9,10 @@
 class Player
 {
 public:
+	const int FRAME_WIDTH = 80;    // 身体宽度
+	const int FRAME_HEIGHT = 80;   // 身体高度
+
+public:
 	Player() {
 		anim_left = new Animation(_T("img/player_left_%d.png"), 6, 45);
 		anim_right = new Animation(_T("img/player_right_%d.png"), 6, 45);
@@ -101,8 +105,6 @@ public:
 
 private:
 	const int SPEED = 6;
-	const int FRAME_WIDTH = 80;    // 身体宽度
-	const int FRAME_HEIGHT = 80;   // 身体高度
 	const int SHADOW_WIDTH = 32;   // 阴影宽度
 
 private:

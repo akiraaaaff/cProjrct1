@@ -13,8 +13,8 @@ public:
 	~Bullet() = default;
 
 	void Draw() const {
-		setlinecolor(RGB(255, 155, 50));
-		setlinecolor(RGB(200, 75, 10));
+		setfillcolor(RGB(255, 155, 50));
+		setfillcolor(RGB(200, 75, 10));
 		fillcircle(position.x, position.y, RADIUS);
 	}
 

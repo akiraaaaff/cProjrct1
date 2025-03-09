@@ -28,6 +28,7 @@
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Player.h" />
     <ClCompile Include="Window.h" />
+    <ClInclude Include="Sound.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
