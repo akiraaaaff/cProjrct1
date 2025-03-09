@@ -1,0 +1,108 @@
+﻿#ifndef ENEMY_H
+#define ENEMY_H
+
+#include <graphics.h>
+#include "Animation.h"
+#include "Window.h"
+#include "Bullet.h"
+#include "Player.h"
+class Enemy
+{
+public:
+	Enemy() {
+		anim_left = new Animation(_T("img/enemy_left_%d.png"), 6, 45);
+		anim_right = new Animation(_T("img/enemy_right_%d.png"), 6, 45);
+		loadimage(&img_shadow, _T("img/shadow_enemy.png"));
+
+		// 敌人生成边界
+		enum class SpawnEdge {
+			Up=0,
+			Down,
+			Left,
+			Right,
+		};
+
+		// 将敌人放置在地图外边界处的随机位置上
+		SpawnEdge edge = (SpawnEdge)(rand() % 4);
+		switch (edge)
+		{
+		case SpawnEdge::Up:
+			position.x = rand() % WINDOW_WIDTH;
+			position.y = -WINDOW_HEIGHT;
+			break;
+		case SpawnEdge::Down:
+			position.x = rand() % WINDOW_WIDTH;
+			position.y = WINDOW_HEIGHT;
+			break;
+		case SpawnEdge::Left:
+			position.x = -WINDOW_WIDTH;
+			position.y = rand() % WINDOW_HEIGHT;
+			break;
+		case SpawnEdge::Right:
+			position.x = WINDOW_WIDTH;
+			position.y = rand() % WINDOW_HEIGHT;
+			break;
+		default:
+			break;
+		}
+	}
+
+	~Enemy() {
+		delete anim_left;
+		delete anim_right;
+	}
+
+	bool CheckBulletCollision(const Bullet& bullet) {
+		return false;
+	}
+
+	bool CheckPlayerCollision(const Player& player) {
+		return false;
+	}
+
+	void Move(const Player& player) {
+
+		const POINT& player_position = player.GetPosition();
+		int dir_x = player_position.x - position.x;
+		int dir_y = player_position.y - position.y;
+		double len_dir = sqrt(dir_x * dir_x + dir_y * dir_y);
+		if (len_dir != 0) {
+			double normalized_x = dir_x / len_dir;
+			double normalized_y = dir_y / len_dir;
+			position.x += (int)(SPEED * normalized_x);
+			position.y += (int)(SPEED * normalized_y);
+		}
+
+		if (dir_x < 0)
+			facing_left = true;
+		else if (dir_x > 0)
+			facing_left = false;
+	}
+
+	void Draw(int delta) {
+
+		int pos_shadow_x = position.x + (FRAME_WIDTH / 2 - SHADOW_WIDTH / 2);
+		int pos_shadow_y = position.y + FRAME_HEIGHT - 35;
+		putimage_alpha(pos_shadow_x, pos_shadow_y, &img_shadow);
+
+		if (facing_left)
+			anim_left->play(position.x, position.y, delta);
+		else
+			anim_right->play(position.x, position.y, delta);
+	}
+
+private:
+	const int SPEED = 2;
+	const int FRAME_WIDTH = 80;    // 身体宽度
+	const int FRAME_HEIGHT = 80;   // 身体高度
+	const int SHADOW_WIDTH = 48;   // 阴影宽度
+
+private:
+	IMAGE img_shadow;
+	Animation* anim_left;
+	Animation* anim_right;
+	POINT position = { 0,0 };
+	bool facing_left = false;
+};
+
+#endif // ENEMY_H

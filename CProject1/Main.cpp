@@ -1,56 +1,27 @@
 ﻿#include<graphics.h>
-#include<string>
+#include "Player.h"
+#include "Graphics.h"
+#include "Enemy.h"
 
-int idx_current_anim = 0;
-
-const int PLAYER_ANIM_NUM = 6;
-const LONG PLAYER_SPEED = 6;
-
-IMAGE img_player_left[PLAYER_ANIM_NUM];
-IMAGE img_player_right[PLAYER_ANIM_NUM];
-
-POINT player_pos = { 500,500 };
-
-# pragma comment(lib,"MSIMG32.LIB")
-
-inline void putimage_alpha(int x, int y, IMAGE* img) {
-
-	int w = img->getwidth();
-	int h = img->getheight();
-	AlphaBlend(GetImageHDC(NULL), x, y, w, h,
-		GetImageHDC(img), 0, 0, w, h, { AC_SRC_OVER,0,255,AC_SRC_ALPHA });
-}
-
-void LoadAnimation() {
-
-	for (size_t i = 0; i < PLAYER_ANIM_NUM; i++)
-	{
-		std::wstring path = L"img/player_left_" + std::to_wstring(i) + L".png";
-		loadimage(&img_player_left[i], path.c_str());
-	}
-
-	for (size_t i = 0; i < PLAYER_ANIM_NUM; i++)
-	{
-		std::wstring path = L"img/player_right_" + std::to_wstring(i) + L".png";
-		loadimage(&img_player_right[i], path.c_str());
-	}
+void TryGenerateEnemy(std::vector<Enemy*>& enemy_list) {
+	const int INTERVAL = 100;
+	static int counter = 0;
+	if ((++counter) % INTERVAL == 0)
+		enemy_list.push_back(new Enemy());
 }
 
 int main() {
 
-	initgraph(1280, 720);
+	// 初始化
+	initgraph(WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	bool running = true;
 
+	Player player;
 	ExMessage msg;
 	IMAGE img_background;
+	std::vector<Enemy*> enemy_list;
 
-	bool is_move_up = false;
-	bool is_move_down = false;
-	bool is_move_left = false;
-	bool is_move_right = false;
-
-	LoadAnimation();
 	loadimage(&img_background, _T("img/background.png"));
 
 	BeginBatchDraw();
@@ -59,65 +30,29 @@ int main() {
 	{
 		DWORD start_time = GetTickCount();
 
+		// 读取操作
 		while (peekmessage(&msg))
 		{
-			if (msg.message == WM_KEYDOWN)
-			{
-				switch (msg.vkcode)
-				{
-				case VK_UP:
-					is_move_up = true;
-					break;
-				case VK_DOWN:
-					is_move_down = true;
-					break;
-				case VK_LEFT:
-					is_move_left = true;
-					break;
-				case VK_RIGHT:
-					is_move_right = true;
-					break;
-				}
-			}
-			else if (msg.message == WM_KEYUP)
-			{
-				switch (msg.vkcode)
-				{
-				case VK_UP:
-					is_move_up = false;
-					break;
-				case VK_DOWN:
-					is_move_down = false;
-					break;
-				case VK_LEFT:
-					is_move_left = false;
-					break;
-				case VK_RIGHT:
-					is_move_right = false;
-					break;
-				}
-			}
+			player.ProcessEvent(msg);
 		}
 
-		if (is_move_up)player_pos.y -= PLAYER_SPEED;
-		if (is_move_down)player_pos.y += PLAYER_SPEED;
-		if (is_move_left)player_pos.x -= PLAYER_SPEED;
-		if (is_move_right)player_pos.x += PLAYER_SPEED;
+		// 处理数据
+		player.Move();
+		TryGenerateEnemy(enemy_list);
+		for (Enemy* enemy : enemy_list)
+			enemy->Move(player);
 
-		static int counter = 0;
-		if (++counter % 5 == 0)
-			idx_current_anim++;
-
-		// 使动画循环播放
-		idx_current_anim = idx_current_anim % PLAYER_ANIM_NUM;
-
+		// 绘制画面
 		cleardevice();
 
 		putimage(0, 0, &img_background);
-		putimage_alpha(player_pos.x, player_pos.y, &img_player_left[idx_current_anim]);
+		player.Draw(1000 / 144);
+		for (Enemy* enemy : enemy_list)
+			enemy->Draw(1000 / 144);
 
 		FlushBatchDraw();
 
+		// 锁帧
 		DWORD end_time = GetTickCount();
 		DWORD delta_time = end_time - start_time;
 
@@ -127,6 +62,7 @@ int main() {
 		}
 	}
 
+	// 释放资源
 	EndBatchDraw();
 
 	return 0;
