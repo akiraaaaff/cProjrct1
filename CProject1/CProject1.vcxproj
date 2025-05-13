@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Atlas.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -29,6 +28,8 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="InGame.h" />
+    <ClInclude Include="OutGame.h" />
     <ClInclude Include="Player.h" />
     <ClCompile Include="Window.h" />
     <ClInclude Include="Sound.h" />

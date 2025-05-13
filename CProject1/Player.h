@@ -14,9 +14,9 @@ public:
 	const int FRAME_HEIGHT = 80;   // 身体高度
 
 public:
-	Player() {
-		anim_left = new Animation(atlas_player_left, 45);
-		anim_right = new Animation(atlas_player_right, 45);
+	void Init(Atlas* left, Atlas* right) {
+		anim_left = new Animation(left, 45);
+		anim_right = new Animation(right, 45);
 		loadimage(&img_shadow, _T("img/shadow_player.png"));
 	}
 

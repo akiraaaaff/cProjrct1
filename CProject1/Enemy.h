@@ -11,9 +11,9 @@
 class Enemy
 {
 public:
-	Enemy() {
-		anim_left = new Animation(atlas_enemy_left, 45);
-		anim_right = new Animation(atlas_enemy_right, 45);
+	Enemy(Atlas* left, Atlas* right) {
+		anim_left = new Animation(left, 45);
+		anim_right = new Animation(right, 45);
 		loadimage(&img_shadow, _T("img/shadow_enemy.png"));
 
 		// 敌人生成边界

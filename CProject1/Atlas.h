@@ -30,10 +30,4 @@ public:
 	std::vector<IMAGE*> frame_list;
 };
 
-// 这里用 extern 只做声明
-extern Atlas* atlas_player_left;
-extern Atlas* atlas_player_right;
-extern Atlas* atlas_enemy_left;
-extern Atlas* atlas_enemy_right;
-
 #endif // ATLAS_H

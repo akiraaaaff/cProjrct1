@@ -53,5 +53,11 @@
     <ClInclude Include="State.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="InGame.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OutGame.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
