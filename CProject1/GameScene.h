@@ -1,8 +1,11 @@
 ﻿#pragma once
 
 #include "Scene.h"
+#include "SceneManager.h"
 
 #include<iostream>
+
+extern SceneManager scene_manager;
 
 class GameScene :public Scene
 {
@@ -22,7 +25,11 @@ public:
 		outtextxy(10, 10, _T("游戏场景绘图内容"));
 	}
 
-	void on_input(const Scene& msg) {}
+	void on_input(const ExMessage& msg) {
+		if (msg.message == WM_KEYDOWN) {
+			scene_manager.swith_to(SceneManager::SceneType::Menu);
+		}
+	}
 
 	void on_exit() {
 		std::cout << "游戏场景退出" << std::endl;

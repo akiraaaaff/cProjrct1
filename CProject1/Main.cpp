@@ -1,6 +1,14 @@
 ﻿#include<graphics.h>
 #include "Scene.h"
 #include "MenuScene.h"
+#include "SelectorScene.h"
+#include "GameScene.h"
+#include "SceneManager.h"
+
+Scene* menu_scene = nullptr;
+Scene* selector_scene = nullptr;
+Scene* game_scene = nullptr;
+SceneManager scene_manager;
 
 int main() {
 
@@ -11,8 +19,10 @@ int main() {
 
 	BeginBatchDraw();
 
-	Scene* scene = new MenuScene();
-	scene->on_enter();
+	menu_scene = new MenuScene();
+	selector_scene = new SelectorScene();
+	game_scene = new GameScene();
+	scene_manager.set_current_scene(menu_scene);
 
 	while (true)
 	{
@@ -20,13 +30,13 @@ int main() {
 
 		while (peekmessage(&msg))
 		{
-			scene->on_input(msg);
+			scene_manager.on_input(msg);
 		}
 
-		scene->on_update();
+		scene_manager.on_update();
 
 		cleardevice();
-		scene->on_draw();
+		scene_manager.on_draw();
 		FlushBatchDraw();
 
 		DWORD end_time = GetTickCount();
