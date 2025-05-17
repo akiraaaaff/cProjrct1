@@ -41,5 +41,11 @@
     <ClInclude Include="Atlas.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

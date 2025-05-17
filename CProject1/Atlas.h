@@ -31,7 +31,7 @@ public:
 		return (int)img_list.size();
 	}
 
-	IMAGE* get_iamge(int idx) {
+	IMAGE* get_image(int idx) {
 		if (idx<0 || idx>img_list.size())
 		{
 			return nullptr;
